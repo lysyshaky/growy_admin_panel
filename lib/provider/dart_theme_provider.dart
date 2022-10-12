@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:growy/services/dark_theme_prefs.dart';
+import 'package:growy_admin_panel/services/dark_theme_prefs.dart';
 
 class DarkThemeProvider with ChangeNotifier {
   DarkThemePrefs darkThemePrefs = DarkThemePrefs();
