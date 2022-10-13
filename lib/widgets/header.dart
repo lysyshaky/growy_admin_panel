@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:growy_admin_panel/consts/consts.dart';
 import 'package:growy_admin_panel/services/utils.dart';
 
 import '../responsive.dart';
@@ -38,7 +39,7 @@ class Header extends StatelessWidget {
           child: TextField(
             decoration: InputDecoration(
                 hintText: "Search",
-                fillColor: Theme.of(context).cardColor,
+                fillColor: Colors.green.withOpacity(0.1),
                 filled: true,
                 border: const OutlineInputBorder(
                   borderSide: BorderSide.none,
@@ -49,9 +50,10 @@ class Header extends StatelessWidget {
                 suffixIcon: InkWell(
                   onTap: () {},
                   child: Container(
-                    padding: const EdgeInsets.all(8 * 0.75), //defaultPadding
+                    padding: const EdgeInsets.all(
+                        defaultPadding * 0.75), //defaultPadding
                     margin: const EdgeInsets.symmetric(
-                        horizontal: 8 / 2), // defaultPadding/2
+                        horizontal: defaultPadding / 2), // defaultPadding/2
                     decoration: const BoxDecoration(
                       color: Colors.green,
                       borderRadius: BorderRadius.all(

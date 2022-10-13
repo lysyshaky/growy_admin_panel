@@ -15,3 +15,5 @@ class Consts {
     '/Users/yuralysyshak/growy/assets/images/landing/vergtablebg.jpg'
   ];
 }
+
+const defaultPadding = 16.0;
