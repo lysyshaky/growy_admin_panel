@@ -53,7 +53,7 @@ class Header extends StatelessWidget {
                     padding: const EdgeInsets.all(
                         defaultPadding * 0.75), //defaultPadding
                     margin: const EdgeInsets.symmetric(
-                        horizontal: defaultPadding / 2), // defaultPadding/2
+                        horizontal: 0), // defaultPadding/2
                     decoration: const BoxDecoration(
                       color: Colors.green,
                       borderRadius: BorderRadius.all(
