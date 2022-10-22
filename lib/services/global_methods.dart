@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:growy_admin_panel/inner_screens/add_product.dart';
 
 import '../widgets/text_widget.dart';
 
 class GlobalMethods {
+  static navigateTo({required BuildContext ctx, required String routeName}) {
+    Navigator.pushNamed(ctx, UploadProductForm.routeName);
+  }
+
   static Future<void> warningDialog({
     required String title,
     required String subtitle,

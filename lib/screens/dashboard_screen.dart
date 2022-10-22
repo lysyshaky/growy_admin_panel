@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:growy_admin_panel/consts/consts.dart';
+import 'package:growy_admin_panel/services/global_methods.dart';
+import 'package:growy_admin_panel/widgets/buttons_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../controllers/menu_controller.dart';
+import '../inner_screens/add_product.dart';
 import '../responsive.dart';
 import '../services/utils.dart';
 import '../widgets/grid_products.dart';
 import '../widgets/header.dart';
 import '../widgets/orders_list.dart';
 import '../widgets/products_widget.dart';
+import '../widgets/text_widget.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -18,6 +22,7 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = Utils(context).getScreenSize;
+    Color color = Utils(context).color;
     return SafeArea(
       child: SingleChildScrollView(
         controller: ScrollController(),
@@ -28,6 +33,45 @@ class DashboardScreen extends StatelessWidget {
               ftc: () {
                 context.read<MenuContoller>().controlDashboardMenu();
               },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextWidget(
+              text: "Latest Products",
+              color: color,
+              textSize: 14,
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  ButtonsWidget(
+                    onPressed: () {},
+                    text: "View all",
+                    icon: Icons.store,
+                    backgroundColor: Colors.green,
+                  ),
+                  Spacer(),
+                  ButtonsWidget(
+                    onPressed: () {
+                      GlobalMethods.navigateTo(
+                        ctx: context,
+                        routeName: UploadProductForm.routeName,
+                      );
+                    },
+                    text: "Add proudct",
+                    icon: Icons.add,
+                    backgroundColor: Colors.green,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 15,
             ),
             const SizedBox(
               height: defaultPadding,
