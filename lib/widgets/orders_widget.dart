@@ -25,18 +25,15 @@ class _OrdersWidgetState extends State<OrdersWidget> {
         borderRadius: BorderRadius.circular(8.0),
         color: Colors.green.withOpacity(0.4),
         child: Padding(
-          padding: const EdgeInsets.all(0.0),
+          padding: const EdgeInsets.all(8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Flexible(
                 flex: size.width < 650 ? 3 : 1,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.network(
-                    "https://www.lifepng.com/wp-content/uploads/2020/11/Apricot-Large-Single-png-hd.png",
-                    fit: BoxFit.fill,
-                  ),
+                child: Image.network(
+                  "https://www.lifepng.com/wp-content/uploads/2020/11/Apricot-Large-Single-png-hd.png",
+                  fit: BoxFit.fill,
                 ),
               ),
               const SizedBox(width: 12.0),

@@ -7,8 +7,15 @@ import 'package:growy_admin_panel/services/utils.dart';
 import '../responsive.dart';
 
 class Header extends StatelessWidget {
-  const Header({Key? key, required this.ftc}) : super(key: key);
+  const Header({
+    Key? key,
+    required this.ftc,
+    required this.title,
+    this.showTextField = true,
+  }) : super(key: key);
   final Function ftc;
+  final String title;
+  final bool showTextField;
   @override
   Widget build(BuildContext context) {
     final theme = Utils(context).getTheme;
@@ -27,7 +34,7 @@ class Header extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              "Dashboard",
+              title,
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
@@ -35,39 +42,41 @@ class Header extends StatelessWidget {
           Spacer(
             flex: Responsive.isDesktop(context) ? 2 : 1,
           ),
-        Expanded(
-          child: TextField(
-            decoration: InputDecoration(
-                hintText: "Search",
-                fillColor: Colors.green.withOpacity(0.1),
-                filled: true,
-                border: const OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(12),
-                  ),
-                ),
-                suffixIcon: InkWell(
-                  onTap: () {},
-                  child: Container(
-                    padding: const EdgeInsets.all(
-                        defaultPadding * 0.75), //defaultPadding
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 0), // defaultPadding/2
-                    decoration: const BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(12),
+        !showTextField
+            ? Container()
+            : Expanded(
+                child: TextField(
+                  decoration: InputDecoration(
+                      hintText: "Search",
+                      fillColor: Colors.green.withOpacity(0.1),
+                      filled: true,
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12),
+                        ),
                       ),
-                    ),
-                    child: const Icon(
-                      Icons.search,
-                      color: Colors.white,
-                    ),
-                  ),
-                )),
-          ),
-        ),
+                      suffixIcon: InkWell(
+                        onTap: () {},
+                        child: Container(
+                          padding: const EdgeInsets.all(
+                              defaultPadding * 0.75), //defaultPadding
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 0), // defaultPadding/2
+                          decoration: const BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(12),
+                            ),
+                          ),
+                          child: const Icon(
+                            Icons.search,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )),
+                ),
+              ),
       ],
     );
   }

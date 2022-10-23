@@ -39,10 +39,17 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                   padding: const EdgeInsets.all(defaultPadding),
                   child: Column(
                     children: [
+                      const SizedBox(
+                        height: 25,
+                      ),
                       Header(
                         ftc: () {
                           context.read<MenuContoller>().controlProductsMenu();
                         },
+                        title: 'All products',
+                      ),
+                      const SizedBox(
+                        height: 25,
                       ),
                       Responsive(
                         mobile: ProuductGridWidget(

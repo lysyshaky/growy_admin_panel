@@ -8,5 +8,6 @@ class Utils {
   bool get getTheme => Provider.of<DarkThemeProvider>(context).getDarkTheme;
   get appBarcolor => getTheme ? Colors.green : Colors.white;
   get color => getTheme ? Colors.white : Colors.black;
+  get dropDownColor => getTheme ? Colors.green : Colors.white;
   Size get getScreenSize => MediaQuery.of(context).size;
 }

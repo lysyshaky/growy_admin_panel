@@ -41,13 +41,17 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
                   controller: ScrollController(),
                   child: Column(
                     children: [
+                      const SizedBox(
+                        height: 25,
+                      ),
                       Header(
                         ftc: () {
                           context.read<MenuContoller>().controlAllOrders();
                         },
+                        title: 'All orders',
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 25,
                       ),
                       const Padding(
                         padding: EdgeInsets.all(8.0),

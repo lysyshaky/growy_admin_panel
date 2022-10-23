@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../controllers/menu_controller.dart';
 import '../inner_screens/add_product.dart';
+import '../inner_screens/all_orders.dart';
 import '../responsive.dart';
 import '../services/utils.dart';
 import '../widgets/grid_products.dart';
@@ -33,6 +34,7 @@ class DashboardScreen extends StatelessWidget {
               ftc: () {
                 context.read<MenuContoller>().controlDashboardMenu();
               },
+              title: 'Dashborad',
             ),
             const SizedBox(
               height: 20,
@@ -58,9 +60,11 @@ class DashboardScreen extends StatelessWidget {
                   Spacer(),
                   ButtonsWidget(
                     onPressed: () {
-                      GlobalMethods.navigateTo(
-                        ctx: context,
-                        routeName: UploadProductForm.routeName,
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UploadProductForm(),
+                        ),
                       );
                     },
                     text: "Add proudct",
