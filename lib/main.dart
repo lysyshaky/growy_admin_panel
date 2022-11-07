@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:growy_admin_panel/consts/theme_data.dart';
@@ -9,7 +10,20 @@ import 'package:provider/provider.dart';
 import 'controllers/menu_controller.dart';
 import 'inner_screens/add_product.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+        apiKey: "AIzaSyCzErGIqYGNhTZJbh4DK7jgfCNYYcUvD7o",
+        authDomain: "growy-185cf.firebaseapp.com",
+        projectId: "growy-185cf",
+        storageBucket: "growy-185cf.appspot.com",
+        messagingSenderId: "390146175797",
+        appId: "1:390146175797:web:b270b566151f4486be527c",
+        measurementId: "G-6DFE3TJ9JX"),
+    //     //options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
@@ -31,32 +45,57 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
+  final Future<FirebaseApp> _firebaseInitialization = Firebase.initializeApp();
+
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => MenuContoller(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) {
-            return themeChangeProvider;
-          },
-        ),
-      ],
-      child: Consumer<DarkThemeProvider>(
-        builder: (context, themeProvider, child) {
-          return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'Growy',
-              theme: Styles.themeData(themeProvider.getDarkTheme, context),
-              home: const MainScreen(),
-              routes: {
-                UploadProductForm.routeName: (context) =>
-                    const UploadProductForm(),
-              });
-        },
-      ),
-    );
+    bool _isDark = true;
+    return FutureBuilder(
+        future: _firebaseInitialization,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const MaterialApp(
+              home: Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            );
+          } else if (snapshot.hasError) {
+            // return const MaterialApp(
+            //   home: Scaffold(
+            //     body: Center(
+            //       child: Text("An error occured"),
+            //     ),
+            //   ),
+            // );
+          }
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider(
+                create: (_) => MenuContoller(),
+              ),
+              ChangeNotifierProvider(
+                create: (_) {
+                  return themeChangeProvider;
+                },
+              ),
+            ],
+            child: Consumer<DarkThemeProvider>(
+              builder: (context, themeProvider, child) {
+                return MaterialApp(
+                    debugShowCheckedModeBanner: false,
+                    title: 'Growy',
+                    theme:
+                        Styles.themeData(themeProvider.getDarkTheme, context),
+                    home: const MainScreen(),
+                    routes: {
+                      UploadProductForm.routeName: (context) =>
+                          const UploadProductForm(),
+                    });
+              },
+            ),
+          );
+        });
   }
 }

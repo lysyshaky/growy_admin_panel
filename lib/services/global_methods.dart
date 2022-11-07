@@ -8,6 +8,44 @@ class GlobalMethods {
     Navigator.pushNamed(ctx, UploadProductForm.routeName);
   }
 
+  static Future<void> errorDialog({
+    required String subtitle,
+    required BuildContext context,
+  }) async {
+    await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Row(
+              children: [
+                Image.asset('assets/images/warning-sign.png',
+                    height: 24, width: 24, fit: BoxFit.fill),
+                const SizedBox(
+                  width: 8,
+                ),
+                const Text("An Error occured"),
+              ],
+            ),
+            content: Text(subtitle),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  if (Navigator.canPop(context)) {
+                    Navigator.pop(context);
+                  }
+                },
+                child: TextWidget(
+                  color: Colors.green,
+                  text: 'OK',
+                  textSize: 18,
+                  isTitle: true,
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
   static Future<void> warningDialog({
     required String title,
     required String subtitle,

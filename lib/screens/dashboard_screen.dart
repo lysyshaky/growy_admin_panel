@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:growy_admin_panel/consts/consts.dart';
+import 'package:growy_admin_panel/inner_screens/all_products.dart';
 import 'package:growy_admin_panel/services/global_methods.dart';
 import 'package:growy_admin_panel/widgets/buttons_widget.dart';
 import 'package:provider/provider.dart';
@@ -52,7 +53,14 @@ class DashboardScreen extends StatelessWidget {
               child: Row(
                 children: [
                   ButtonsWidget(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AllProductsScreen(),
+                        ),
+                      );
+                    },
                     text: "View all",
                     icon: Icons.store,
                     backgroundColor: Colors.green,

@@ -26,6 +26,14 @@ dependencies:
   badges: ^2.0.3
   dotted_border: ^2.0.0+2
   image_picker: ^0.8.6
+  flutter_spinkit: ^5.1.0
+  uuid: ^3.0.6
+  fluttertoast: ^8.1.1
+  #FireBase
+  firebase: ^9.0.3
+  firebase_core: ^2.1.1
+  cloud_firestore: ^4.0.4
+  firebase_storage: ^11.0.4
 
 dev_dependencies:
   flutter_test:
@@ -40,6 +48,7 @@ flutter:
 
   assets:
     - assets/images/groceries.png
+    - assets/images/warning-sign.png
   
 
   

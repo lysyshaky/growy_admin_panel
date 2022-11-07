@@ -1,21 +1,28 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:growy_admin_panel/consts/consts.dart';
 import 'package:growy_admin_panel/controllers/menu_controller.dart';
 import 'package:growy_admin_panel/responsive.dart';
+import 'package:growy_admin_panel/screens/loading_manager.dart';
 import 'package:growy_admin_panel/widgets/buttons_widget.dart';
 import 'package:growy_admin_panel/widgets/header.dart';
 import 'package:iconly/iconly.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
+import 'package:firebase_storage/firebase_storage.dart' as fs;
+import 'package:firebase/firebase.dart' as fb;
 
+import '../services/global_methods.dart';
 import '../services/utils.dart';
 import '../widgets/side_menu.dart';
 import '../widgets/text_widget.dart';
@@ -54,8 +61,67 @@ class _UploadProductFormState extends State<UploadProductForm> {
     super.dispose();
   }
 
+  bool _isLoading = false;
   void _uploadForm() async {
     final isValid = _formKey.currentState!.validate();
+    FocusScope.of(context).unfocus();
+
+    if (isValid) {
+      _formKey.currentState!.save();
+      if (_pickedImage == null && kIsWeb) {
+        GlobalMethods.errorDialog(
+            subtitle: "Please pick up an image", context: context);
+
+        return;
+      }
+      final _uuid = const Uuid().v4();
+      try {
+        setState(() {
+          _isLoading = true;
+        });
+        fb.StorageReference storageRef =
+            fb.storage().ref().child('productIamges').child(_uuid + '.jpg');
+        final fb.UploadTaskSnapshot uploadTaskSnapshot =
+            await storageRef.put(kIsWeb ? webImage : _pickedImage).future;
+        Uri imageUri = await uploadTaskSnapshot.ref.getDownloadURL();
+        await FirebaseFirestore.instance.collection('products').doc(_uuid).set({
+          'id': _uuid,
+          'title': _titleController.text,
+          'price': _priceController.text,
+          'salePrice': 0.1,
+          'imageUrl': imageUri.toString(),
+          'productCategoryName': _catValue,
+          'isOnSale': false,
+          'isPiece': isPiece,
+          'createdAt': Timestamp.now(),
+        });
+        _clearForm();
+        Fluttertoast.showToast(
+          msg: "Product uploaded succefully",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          // backgroundColor: ,
+          // textColor: ,
+          // fontSize: 16.0
+        );
+      } on FirebaseException catch (error) {
+        GlobalMethods.errorDialog(
+            subtitle: '${error.message}', context: context);
+        setState(() {
+          _isLoading = false;
+        });
+      } catch (error) {
+        GlobalMethods.errorDialog(subtitle: '$error', context: context);
+        setState(() {
+          _isLoading = false;
+        });
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   void _clearForm() {
@@ -87,273 +153,276 @@ class _UploadProductFormState extends State<UploadProductForm> {
         ),
       ),
     );
-
     return Scaffold(
         key: context.read<MenuContoller>().getAddProductsScaffoldKey,
         drawer: const SideMenu(),
-        body: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (Responsive.isDesktop(context))
-              const Expanded(
-                child: SideMenu(),
-              ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(defaultPadding),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      Header(
-                        ftc: () {
-                          context
-                              .read<MenuContoller>()
-                              .controlAddProductsMenu();
-                        },
-                        title: 'Add product',
-                        showTextField: false,
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      Container(
-                        width: size.width > 650 ? 650 : size.width,
-                        color: Colors.green.withOpacity(0.1),
-                        padding: const EdgeInsets.all(defaultPadding),
-                        margin: const EdgeInsets.all(defaultPadding),
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              TextWidget(
-                                text: "Product Title",
-                                color: color,
-                                isTitle: true,
-                                textSize: 16,
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              TextFormField(
-                                controller: _titleController,
-                                key: const ValueKey("Title"),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please enter a Title';
-                                  }
-                                  return null;
-                                },
-                                decoration: inputDecoration,
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    flex: 2,
-                                    child: FittedBox(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          TextWidget(
-                                            text: "Price in \$*",
-                                            color: color,
-                                            isTitle: true,
-                                            textSize: 14,
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          SizedBox(
-                                            width: 150,
-                                            child: TextFormField(
-                                              controller: _priceController,
-                                              key: const ValueKey("Price \$"),
-                                              keyboardType:
-                                                  TextInputType.number,
-                                              validator: (value) {
-                                                if (value!.isEmpty) {
-                                                  return 'Price is missed';
-                                                }
-                                                return null;
-                                              },
-                                              inputFormatters: <
-                                                  TextInputFormatter>[
-                                                FilteringTextInputFormatter
-                                                    .allow(RegExp(r'[0-9.]')),
+        body: LoadingManager(
+          isLoading: _isLoading,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (Responsive.isDesktop(context))
+                const Expanded(
+                  child: SideMenu(),
+                ),
+              Expanded(
+                flex: 5,
+                child: Padding(
+                  padding: const EdgeInsets.all(defaultPadding),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        Header(
+                          ftc: () {
+                            context
+                                .read<MenuContoller>()
+                                .controlAddProductsMenu();
+                          },
+                          title: 'Add product',
+                          showTextField: false,
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        Container(
+                          width: size.width > 650 ? 650 : size.width,
+                          color: Colors.green.withOpacity(0.1),
+                          padding: const EdgeInsets.all(defaultPadding),
+                          margin: const EdgeInsets.all(defaultPadding),
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                TextWidget(
+                                  text: "Product Title",
+                                  color: color,
+                                  isTitle: true,
+                                  textSize: 16,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextFormField(
+                                  controller: _titleController,
+                                  key: const ValueKey("Title"),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter a Title';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: inputDecoration,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: FittedBox(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            TextWidget(
+                                              text: "Price in \$*",
+                                              color: color,
+                                              isTitle: true,
+                                              textSize: 14,
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            SizedBox(
+                                              width: 150,
+                                              child: TextFormField(
+                                                controller: _priceController,
+                                                key: const ValueKey("Price \$"),
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                validator: (value) {
+                                                  if (value!.isEmpty) {
+                                                    return 'Price is missed';
+                                                  }
+                                                  return null;
+                                                },
+                                                inputFormatters: <
+                                                    TextInputFormatter>[
+                                                  FilteringTextInputFormatter
+                                                      .allow(RegExp(r'[0-9.]')),
+                                                ],
+                                                decoration: inputDecoration,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            TextWidget(
+                                              text: "Product category*",
+                                              color: color,
+                                              isTitle: true,
+                                              textSize: 14,
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            //DropDown menu
+                                            _categoryDropDown(),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            TextWidget(
+                                              text: "Measure unit*",
+                                              color: color,
+                                              isTitle: true,
+                                              textSize: 14,
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            //Radio Buttons
+                                            Row(
+                                              children: [
+                                                TextWidget(
+                                                    text: "KG",
+                                                    color: color,
+                                                    textSize: 16),
+                                                Radio(
+                                                  value: 1,
+                                                  groupValue: _groupValue,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      _groupValue = 1;
+                                                      isPiece = false;
+                                                    });
+                                                  },
+                                                  activeColor: Colors.green,
+                                                ),
+                                                TextWidget(
+                                                    text: "Piece",
+                                                    color: color,
+                                                    textSize: 16),
+                                                Radio(
+                                                  value: 2,
+                                                  groupValue: _groupValue,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      _groupValue = 2;
+                                                      isPiece = true;
+                                                    });
+                                                  },
+                                                  activeColor: Colors.green,
+                                                ),
                                               ],
-                                              decoration: inputDecoration,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    //Image to be picked here
+
+                                    Expanded(
+                                      flex: 4,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(
+                                            defaultPadding),
+                                        child: Container(
+                                          height: size.width > 650
+                                              ? 350
+                                              : size.width * 0.45,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              color: _scaffoldColor),
+                                          child: _pickedImage == null
+                                              ? dottedBorder(color: color)
+                                              : ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                  child: kIsWeb
+                                                      ? Image.memory(
+                                                          webImage,
+                                                          fit: BoxFit.fill,
+                                                        )
+                                                      : Image.file(
+                                                          _pickedImage!,
+                                                          fit: BoxFit.fill),
+                                                ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: FittedBox(
+                                          child: Column(
+                                        children: [
+                                          TextButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                _pickedImage = null;
+                                                webImage = Uint8List(8);
+                                              });
+                                            },
+                                            child: TextWidget(
+                                              text: 'Clear',
+                                              color: Colors.red,
+                                              textSize: 14,
                                             ),
                                           ),
-                                          const SizedBox(
-                                            height: 20,
+                                          TextButton(
+                                            onPressed: () {},
+                                            child: TextWidget(
+                                              text: 'Update image',
+                                              color: Colors.green,
+                                              textSize: 14,
+                                            ),
                                           ),
-                                          TextWidget(
-                                            text: "Product category*",
-                                            color: color,
-                                            isTitle: true,
-                                            textSize: 14,
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          //DropDown menu
-                                          _categoryDropDown(),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                          TextWidget(
-                                            text: "Measure unit*",
-                                            color: color,
-                                            isTitle: true,
-                                            textSize: 14,
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          //Radio Buttons
-                                          Row(
-                                            children: [
-                                              TextWidget(
-                                                  text: "KG",
-                                                  color: color,
-                                                  textSize: 16),
-                                              Radio(
-                                                value: 1,
-                                                groupValue: _groupValue,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    _groupValue = 1;
-                                                    isPiece = false;
-                                                  });
-                                                },
-                                                activeColor: Colors.green,
-                                              ),
-                                              TextWidget(
-                                                  text: "Piece",
-                                                  color: color,
-                                                  textSize: 16),
-                                              Radio(
-                                                value: 2,
-                                                groupValue: _groupValue,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    _groupValue = 2;
-                                                    isPiece = true;
-                                                  });
-                                                },
-                                                activeColor: Colors.green,
-                                              ),
-                                            ],
-                                          )
                                         ],
-                                      ),
+                                      )),
                                     ),
-                                  ),
-                                  //Image to be picked here
-
-                                  Expanded(
-                                    flex: 4,
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.all(defaultPadding),
-                                      child: Container(
-                                        height: size.width > 650
-                                            ? 350
-                                            : size.width * 0.45,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            color: _scaffoldColor),
-                                        child: _pickedImage == null
-                                            ? dottedBorder(color: color)
-                                            : ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                child: kIsWeb
-                                                    ? Image.memory(
-                                                        webImage,
-                                                        fit: BoxFit.fill,
-                                                      )
-                                                    : Image.file(_pickedImage!,
-                                                        fit: BoxFit.fill),
-                                              ),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: FittedBox(
-                                        child: Column(
-                                      children: [
-                                        TextButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              _pickedImage = null;
-                                              webImage = Uint8List(8);
-                                            });
-                                          },
-                                          child: TextWidget(
-                                            text: 'Clear',
-                                            color: Colors.red,
-                                            textSize: 14,
-                                          ),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {},
-                                          child: TextWidget(
-                                            text: 'Update image',
-                                            color: Colors.green,
-                                            textSize: 14,
-                                          ),
-                                        ),
-                                      ],
-                                    )),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(18.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    ButtonsWidget(
-                                        onPressed: _clearForm,
-                                        text: 'Clear form',
-                                        icon: IconlyBold.danger,
-                                        backgroundColor: Colors.red),
-                                    ButtonsWidget(
-                                        onPressed: () {
-                                          _uploadForm();
-                                        },
-                                        text: 'Upload',
-                                        icon: IconlyBold.upload,
-                                        backgroundColor: Colors.green),
                                   ],
                                 ),
-                              )
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.all(18.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      ButtonsWidget(
+                                          onPressed: _clearForm,
+                                          text: 'Clear form',
+                                          icon: IconlyBold.danger,
+                                          backgroundColor: Colors.red),
+                                      ButtonsWidget(
+                                          onPressed: () {
+                                            _uploadForm();
+                                          },
+                                          text: 'Upload',
+                                          icon: IconlyBold.upload,
+                                          backgroundColor: Colors.green),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 

@@ -1,18 +1,72 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:growy_admin_panel/widgets/text_widget.dart';
 
+import '../services/global_methods.dart';
 import '../services/utils.dart';
 
 class ProductWidget extends StatefulWidget {
-  const ProductWidget({Key? key}) : super(key: key);
+  const ProductWidget({Key? key, required this.id}) : super(key: key);
+  final String id;
 
   @override
   State<ProductWidget> createState() => _ProductWidgetState();
 }
 
 class _ProductWidgetState extends State<ProductWidget> {
+  bool _isLoading = false;
+  String title = '';
+  String productCat = '';
+  String? imageUrl;
+  String price = '0.0';
+  double salePrice = 0.0;
+  bool isOnSale = false;
+  bool isPiece = false;
+  @override
+  void initState() {
+    getUserData();
+    super.initState();
+  }
+
+  Future<void> getUserData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final DocumentSnapshot productsDoc = await FirebaseFirestore.instance
+          .collection('products')
+          .doc(widget.id)
+          .get();
+      if (productsDoc == null) {
+        return;
+      } else {
+        //_email = userDoc.get('email');
+
+        title = productsDoc.get('title');
+        productCat = productsDoc.get('productCategoryName');
+        imageUrl = productsDoc.get('imageUrl');
+        price = productsDoc.get('price');
+        salePrice = productsDoc.get('salePrice');
+        isOnSale = productsDoc.get('isOnSale');
+        isPiece = productsDoc.get('isPiece');
+      }
+    } catch (error) {
+      setState(() {
+        _isLoading = false;
+      });
+      GlobalMethods.errorDialog(
+          subtitle: 'Something went wrong, please try again later',
+          context: context);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = Utils(context).getScreenSize;
@@ -39,7 +93,9 @@ class _ProductWidgetState extends State<ProductWidget> {
                     Flexible(
                       flex: 3,
                       child: Image.network(
-                        "https://www.lifepng.com/wp-content/uploads/2020/11/Apricot-Large-Single-png-hd.png",
+                        imageUrl == null
+                            ? "https://www.lifepng.com/wp-content/uploads/2020/11/Apricot-Large-Single-png-hd.png"
+                            : imageUrl!,
                         fit: BoxFit.fill,
                         width: size.width * 0.12,
                         height: size.width * 0.12,
@@ -73,7 +129,9 @@ class _ProductWidgetState extends State<ProductWidget> {
                 Row(
                   children: [
                     TextWidget(
-                      text: '\$1.99',
+                      text: isOnSale
+                          ? '\$${salePrice.toStringAsFixed(2)}'
+                          : '\$${price}',
                       textSize: 18,
                       color: color,
                     ),
@@ -81,23 +139,26 @@ class _ProductWidgetState extends State<ProductWidget> {
                       width: 7.0,
                     ),
                     Visibility(
-                      visible: true,
+                      visible: isOnSale,
                       child: Text(
-                        '\$3.89',
+                        '\$$price',
                         style: TextStyle(
                             decoration: TextDecoration.lineThrough,
                             color: color),
                       ),
                     ),
                     const Spacer(),
-                    TextWidget(text: '1Kg', color: color, textSize: 18),
+                    TextWidget(
+                        text: isPiece ? 'Piece' : '1Kg',
+                        color: color,
+                        textSize: 18),
                   ],
                 ),
                 const SizedBox(
                   height: 2.0,
                 ),
                 TextWidget(
-                  text: 'Title',
+                  text: title,
                   color: color,
                   textSize: 24,
                   isTitle: true,
