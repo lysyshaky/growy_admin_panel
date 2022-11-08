@@ -24,7 +24,7 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
   Widget build(BuildContext context) {
     Size size = Utils(context).getScreenSize;
     return Scaffold(
-      key: context.read<MenuContoller>().getOrdersScaffoldKey,
+      key: context.read<MenuController>().getOrdersScaffoldKey,
       drawer: const SideMenu(),
       body: SafeArea(
         child: Row(
@@ -46,7 +46,7 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
                       ),
                       Header(
                         ftc: () {
-                          context.read<MenuContoller>().controlAllOrders();
+                          context.read<MenuController>().controlAllOrders();
                         },
                         title: 'All orders',
                       ),

@@ -23,7 +23,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
   Widget build(BuildContext context) {
     Size size = Utils(context).getScreenSize;
     return Scaffold(
-      key: context.read<MenuContoller>().getGridScaffoldKey,
+      key: context.read<MenuController>().getGridScaffoldKey,
       drawer: const SideMenu(),
       body: SafeArea(
         child: Row(
@@ -44,7 +44,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                       ),
                       Header(
                         ftc: () {
-                          context.read<MenuContoller>().controlProductsMenu();
+                          context.read<MenuController>().controlProductsMenu();
                         },
                         title: 'All products',
                       ),

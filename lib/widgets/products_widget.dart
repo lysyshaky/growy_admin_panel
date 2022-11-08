@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:growy_admin_panel/inner_screens/edit_product.dart';
 import 'package:growy_admin_panel/widgets/text_widget.dart';
 
 import '../services/global_methods.dart';
@@ -16,7 +17,6 @@ class ProductWidget extends StatefulWidget {
 }
 
 class _ProductWidgetState extends State<ProductWidget> {
-  bool _isLoading = false;
   String title = '';
   String productCat = '';
   String? imageUrl;
@@ -26,15 +26,11 @@ class _ProductWidgetState extends State<ProductWidget> {
   bool isPiece = false;
   @override
   void initState() {
-    getUserData();
+    getProductsData();
     super.initState();
   }
 
-  Future<void> getUserData() async {
-    setState(() {
-      _isLoading = true;
-    });
-
+  Future<void> getProductsData() async {
     try {
       final DocumentSnapshot productsDoc = await FirebaseFirestore.instance
           .collection('products')
@@ -44,27 +40,21 @@ class _ProductWidgetState extends State<ProductWidget> {
         return;
       } else {
         //_email = userDoc.get('email');
-
-        title = productsDoc.get('title');
-        productCat = productsDoc.get('productCategoryName');
-        imageUrl = productsDoc.get('imageUrl');
-        price = productsDoc.get('price');
-        salePrice = productsDoc.get('salePrice');
-        isOnSale = productsDoc.get('isOnSale');
-        isPiece = productsDoc.get('isPiece');
+        setState(() {
+          title = productsDoc.get('title');
+          productCat = productsDoc.get('productCategoryName');
+          imageUrl = productsDoc.get('imageUrl');
+          price = productsDoc.get('price');
+          salePrice = productsDoc.get('salePrice');
+          isOnSale = productsDoc.get('isOnSale');
+          isPiece = productsDoc.get('isPiece');
+        });
       }
     } catch (error) {
-      setState(() {
-        _isLoading = false;
-      });
       GlobalMethods.errorDialog(
           subtitle: 'Something went wrong, please try again later',
           context: context);
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+    } finally {}
   }
 
   @override
@@ -79,7 +69,21 @@ class _ProductWidgetState extends State<ProductWidget> {
         color: Colors.green.withOpacity(0.3),
         child: InkWell(
           borderRadius: BorderRadius.circular(12.0),
-          onTap: () {},
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => EditProductScreen(
+                      id: widget.id,
+                      title: title,
+                      price: price,
+                      salePrice: salePrice,
+                      imageUrl: imageUrl == null
+                          ? "https://www.lifepng.com/wp-content/uploads/2020/11/Apricot-Large-Single-png-hd.png"
+                          : imageUrl!,
+                      isOnSale: isOnSale,
+                      isPiece: isPiece,
+                      productCat: productCat,
+                    )));
+          },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
-class MenuContoller extends ChangeNotifier {
+class MenuController extends ChangeNotifier {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _gridScaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _addProductScaffoldKey =
+      GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _editProductScaffoldKey =
       GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _ordersScaffoldKey =
       GlobalKey<ScaffoldState>();
@@ -13,6 +15,8 @@ class MenuContoller extends ChangeNotifier {
   GlobalKey<ScaffoldState> get getGridScaffoldKey => _gridScaffoldKey;
   GlobalKey<ScaffoldState> get getAddProductsScaffoldKey =>
       _addProductScaffoldKey;
+  GlobalKey<ScaffoldState> get getEditProductscaffoldKey =>
+      _editProductScaffoldKey;
   GlobalKey<ScaffoldState> get getOrdersScaffoldKey => _ordersScaffoldKey;
 
 //Callbaks
@@ -31,6 +35,12 @@ class MenuContoller extends ChangeNotifier {
   void controlAddProductsMenu() {
     if (!_addProductScaffoldKey.currentState!.isDrawerOpen) {
       _addProductScaffoldKey.currentState!.openDrawer();
+    }
+  }
+
+  void controlEditProductsMenu() {
+    if (!_editProductScaffoldKey.currentState!.isDrawerOpen) {
+      _editProductScaffoldKey.currentState!.openDrawer();
     }
   }
 

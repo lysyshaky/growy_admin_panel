@@ -154,7 +154,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
       ),
     );
     return Scaffold(
-        key: context.read<MenuContoller>().getAddProductsScaffoldKey,
+        key: context.read<MenuController>().getAddProductsScaffoldKey,
         drawer: const SideMenu(),
         body: LoadingManager(
           isLoading: _isLoading,
@@ -178,7 +178,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                         Header(
                           ftc: () {
                             context
-                                .read<MenuContoller>()
+                                .read<MenuController>()
                                 .controlAddProductsMenu();
                           },
                           title: 'Add product',
@@ -503,7 +503,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
           child: DropdownButton<String>(
             dropdownColor: dropDownColor,
             style: TextStyle(
-                fontWeight: FontWeight.w700, fontSize: 18, color: color),
+                fontWeight: FontWeight.w700, fontSize: 14, color: color),
             value: _catValue,
             onChanged: (value) {
               setState(() {
