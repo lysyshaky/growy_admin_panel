@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -6,13 +7,37 @@ import 'package:growy_admin_panel/widgets/text_widget.dart';
 import '../services/utils.dart';
 
 class OrdersWidget extends StatefulWidget {
-  const OrdersWidget({Key? key}) : super(key: key);
+  const OrdersWidget(
+      {Key? key,
+      required this.price,
+      required this.totalPrice,
+      required this.quantity,
+      this.productId,
+      this.userName,
+      this.imageUrl,
+      this.userId,
+      this.orderId,
+      required this.orderDate})
+      : super(key: key);
+  final double price, totalPrice, quantity;
+  final productId, userName, imageUrl, userId, orderId;
+  final Timestamp orderDate;
 
   @override
   State<OrdersWidget> createState() => _OrdersWidgetState();
 }
 
 class _OrdersWidgetState extends State<OrdersWidget> {
+  late String oderDateStr;
+
+  @override
+  void initState() {
+    var posDate = widget.orderDate.toDate();
+    oderDateStr = '${posDate.day}/${posDate.month}/${posDate.year}';
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Utils(context).getTheme;
@@ -23,7 +48,7 @@ class _OrdersWidgetState extends State<OrdersWidget> {
       padding: const EdgeInsets.all(8.0),
       child: Material(
         borderRadius: BorderRadius.circular(8.0),
-        color: Colors.green.withOpacity(0.4),
+        color: Colors.green.withOpacity(0.2),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -32,7 +57,7 @@ class _OrdersWidgetState extends State<OrdersWidget> {
               Flexible(
                 flex: size.width < 650 ? 3 : 1,
                 child: Image.network(
-                  "https://www.lifepng.com/wp-content/uploads/2020/11/Apricot-Large-Single-png-hd.png",
+                  widget.imageUrl,
                   fit: BoxFit.fill,
                 ),
               ),
@@ -44,7 +69,8 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     TextWidget(
-                      text: "12x For \$19.9",
+                      text:
+                          "${widget.quantity}X For \$${widget.price.toStringAsFixed(2)}",
                       color: color,
                       textSize: 16,
                       isTitle: true,
@@ -59,7 +85,7 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                             isTitle: true,
                           ),
                           TextWidget(
-                            text: " Lysyshak Y.O. ",
+                            text: " ${widget.userName}",
                             color: color,
                             textSize: 14,
                             isTitle: true,
@@ -67,7 +93,7 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                         ],
                       ),
                     ),
-                    const Text("22/10/2022"),
+                    Text(oderDateStr),
                   ],
                 ),
               ),
