@@ -379,7 +379,9 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                             ),
                                           ),
                                           TextButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              _pickImage();
+                                            },
                                             child: TextWidget(
                                               text: 'Update image',
                                               color: Colors.green,

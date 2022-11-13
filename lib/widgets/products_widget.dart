@@ -107,23 +107,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                     ),
                     const Spacer(),
                     PopupMenuButton(
-                      itemBuilder: ((context) => [
-                            PopupMenuItem(
-                              child: Text('Edit'),
-                              onTap: () {},
-                              value: 1,
-                            ),
-                            PopupMenuItem(
-                              child: Text(
-                                'Delete',
-                                style: TextStyle(
-                                  color: Colors.red,
-                                ),
-                              ),
-                              onTap: () {},
-                              value: 1,
-                            ),
-                          ]),
+                      itemBuilder: ((context) => []),
                     ),
                   ],
                 ),
