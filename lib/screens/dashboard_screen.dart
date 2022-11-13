@@ -36,7 +36,7 @@ class DashboardScreen extends StatelessWidget {
               ftc: () {
                 context.read<MenuController>().controlDashboardMenu();
               },
-              title: 'Dashborad',
+              title: 'Dashboard',
             ),
             const SizedBox(
               height: 20,
@@ -76,7 +76,7 @@ class DashboardScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    text: "Add proudct",
+                    text: "Add product",
                     icon: Icons.add,
                     backgroundColor: Colors.green,
                   ),
