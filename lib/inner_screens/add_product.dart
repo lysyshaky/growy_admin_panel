@@ -45,12 +45,15 @@ class _UploadProductFormState extends State<UploadProductForm> {
   File? _pickedImage;
   Uint8List webImage = Uint8List(8);
 
-  late final TextEditingController _titleController, _priceController;
+  late final TextEditingController _titleController,
+      _titleUkController,
+      _priceController;
 
   @override
   void initState() {
     _priceController = TextEditingController();
     _titleController = TextEditingController();
+    _titleUkController = TextEditingController();
 
     super.initState();
   }
@@ -59,6 +62,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
   void dispose() {
     _priceController.dispose();
     _titleController.dispose();
+    _titleUkController.dispose();
     super.dispose();
   }
 
@@ -90,6 +94,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
           'id': _uuid,
           'title': _titleController.text,
           'price': _priceController.text,
+          'title_uk': _titleUkController.text,
           'salePrice': 0.1,
           'imageUrl': imageUri.toString(),
           'productCategoryName': _catValue,
@@ -131,6 +136,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
     _groupValue = 1;
     _priceController.clear();
     _titleController.clear();
+    _titleUkController.clear();
     setState(() {
       _pickedImage = null;
       webImage = Uint8List(8);
@@ -214,6 +220,30 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                 TextFormField(
                                   controller: _titleController,
                                   key: const ValueKey("Title"),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return AppLocalizations.of(context)!
+                                          .valid_title;
+                                    }
+                                    return null;
+                                  },
+                                  decoration: inputDecoration,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextWidget(
+                                  text: "Ukraine title",
+                                  color: color,
+                                  isTitle: true,
+                                  textSize: 16,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                TextFormField(
+                                  controller: _titleUkController,
+                                  key: const ValueKey("TitleUk"),
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return AppLocalizations.of(context)!

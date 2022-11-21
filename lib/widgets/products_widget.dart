@@ -4,7 +4,9 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:growy_admin_panel/inner_screens/edit_product.dart';
 import 'package:growy_admin_panel/widgets/text_widget.dart';
+import 'package:provider/provider.dart';
 
+import '../provider/locale_provider.dart';
 import '../services/global_methods.dart';
 import '../services/utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -19,6 +21,7 @@ class ProductWidget extends StatefulWidget {
 
 class _ProductWidgetState extends State<ProductWidget> {
   String title = '';
+  String titleuk = '';
   String productCat = '';
   String? imageUrl;
   String price = '0.0';
@@ -43,6 +46,7 @@ class _ProductWidgetState extends State<ProductWidget> {
         //_email = userDoc.get('email');
         setState(() {
           title = productsDoc.get('title');
+          titleuk = productsDoc.get('title_uk');
           productCat = productsDoc.get('productCategoryName');
           imageUrl = productsDoc.get('imageUrl');
           price = productsDoc.get('price');
@@ -62,6 +66,8 @@ class _ProductWidgetState extends State<ProductWidget> {
   Widget build(BuildContext context) {
     Size size = Utils(context).getScreenSize;
     final color = Utils(context).color;
+    final languageProvider = Provider.of<LocaleProvider>(context);
+    final locale = languageProvider.locale;
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -75,6 +81,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                 builder: (context) => EditProductScreen(
                       id: widget.id,
                       title: title,
+                      titleuk: titleuk,
                       price: price,
                       salePrice: salePrice,
                       imageUrl: imageUrl == null
@@ -149,7 +156,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                   height: 2.0,
                 ),
                 TextWidget(
-                  text: title,
+                  text: locale.languageCode == "en" ? title : titleuk ?? title,
                   color: color,
                   textSize: 24,
                   isTitle: true,

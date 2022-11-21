@@ -37,9 +37,10 @@ class EditProductScreen extends StatefulWidget {
       required this.productCat,
       required this.imageUrl,
       required this.isOnSale,
-      required this.isPiece})
+      required this.isPiece,
+      required this.titleuk})
       : super(key: key);
-  final String id, title, price, productCat, imageUrl;
+  final String id, title, titleuk, price, productCat, imageUrl;
   final bool isPiece, isOnSale;
   final double salePrice;
   static const routeName = 'EditProductScreen';
@@ -51,7 +52,9 @@ class EditProductScreen extends StatefulWidget {
 class _EditProductScreenState extends State<EditProductScreen> {
   final _formKey = GlobalKey<FormState>();
   // Title and price controllers
-  late final TextEditingController _titleController, _priceController;
+  late final TextEditingController _titleController,
+      _titleUkController,
+      _priceController;
   // Category
   late String _catValue;
   // Sale
@@ -73,6 +76,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
     // set the price and title initial values and initialize the controllers
     _priceController = TextEditingController(text: widget.price);
     _titleController = TextEditingController(text: widget.title);
+    _titleUkController = TextEditingController(text: widget.titleuk);
+
     // Set the variables
     _salePrice = widget.salePrice;
     _catValue = widget.productCat;
@@ -96,6 +101,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     // Dispose the controllers
     _priceController.dispose();
     _titleController.dispose();
+    _titleUkController.dispose();
     super.dispose();
   }
 
@@ -126,6 +132,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
             .doc(widget.id)
             .update({
           'title': _titleController.text,
+          'title_uk': _titleUkController.text,
           'price': _priceController.text,
           'salePrice': _salePrice,
           'imageUrl':
@@ -225,6 +232,30 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                 TextFormField(
                                   controller: _titleController,
                                   key: ValueKey('Title'),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return AppLocalizations.of(context)!
+                                          .valid_title;
+                                    }
+                                    return null;
+                                  },
+                                  decoration: inputDecoration,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextWidget(
+                                  textSize: 16,
+                                  text: "Ukraine Title",
+                                  color: color,
+                                  isTitle: true,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextFormField(
+                                  controller: _titleUkController,
+                                  key: ValueKey('TitleUk'),
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return AppLocalizations.of(context)!
