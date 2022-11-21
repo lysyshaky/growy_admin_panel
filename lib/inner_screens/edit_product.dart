@@ -246,7 +246,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                 ),
                                 TextWidget(
                                   textSize: 16,
-                                  text: "Ukraine Title",
+                                  text: AppLocalizations.of(context)!
+                                      .uk_product_title,
                                   color: color,
                                   isTitle: true,
                                 ),

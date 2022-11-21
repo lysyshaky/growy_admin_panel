@@ -57,7 +57,7 @@
     "cancel_btn": "Cancel",
     "any_products_error": "You didn't add any products",
     "search": "Search",
-    "client": "Client:"
+    "client": "Client:",
+    "uk_product_title": "Product title in Ukrainian language*"
     
-
 }
