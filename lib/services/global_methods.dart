@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:growy_admin_panel/inner_screens/add_product.dart';
 
 import '../widgets/text_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GlobalMethods {
   static navigateTo({required BuildContext ctx, required String routeName}) {
@@ -23,7 +24,9 @@ class GlobalMethods {
                 const SizedBox(
                   width: 8,
                 ),
-                const Text("An Error occured"),
+                Text(
+                  AppLocalizations.of(context)!.error,
+                ),
               ],
             ),
             content: Text(subtitle),
@@ -36,7 +39,7 @@ class GlobalMethods {
                 },
                 child: TextWidget(
                   color: Colors.green,
-                  text: 'OK',
+                  text: AppLocalizations.of(context)!.ok_btn,
                   textSize: 18,
                   isTitle: true,
                 ),
@@ -76,7 +79,7 @@ class GlobalMethods {
                 },
                 child: TextWidget(
                   color: Colors.green,
-                  text: 'Cancel',
+                  text: AppLocalizations.of(context)!.cancel_btn,
                   textSize: 18,
                   isTitle: true,
                 ),
@@ -87,7 +90,7 @@ class GlobalMethods {
                 },
                 child: TextWidget(
                   color: Colors.red,
-                  text: 'OK',
+                  text: AppLocalizations.of(context)!.ok_btn,
                   textSize: 18,
                   isTitle: true,
                 ),

@@ -25,6 +25,7 @@ import '../services/utils.dart';
 import '../widgets/buttons_widget.dart';
 import '../widgets/side_menu.dart';
 import '../widgets/text_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditProductScreen extends StatefulWidget {
   const EditProductScreen(
@@ -135,7 +136,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
           'UpdatedAt': Timestamp.now(),
         });
         await Fluttertoast.showToast(
-          msg: "Product has be updated",
+          msg: AppLocalizations.of(context)!.product_has_been_updated,
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,
@@ -213,7 +214,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               children: <Widget>[
                                 TextWidget(
                                   textSize: 16,
-                                  text: 'Product title*',
+                                  text: AppLocalizations.of(context)!
+                                      .product_title,
                                   color: color,
                                   isTitle: true,
                                 ),
@@ -222,10 +224,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                 ),
                                 TextFormField(
                                   controller: _titleController,
-                                  key: const ValueKey('Title'),
+                                  key: ValueKey('Title'),
                                   validator: (value) {
                                     if (value!.isEmpty) {
-                                      return 'Please enter a Title';
+                                      return AppLocalizations.of(context)!
+                                          .valid_title;
                                     }
                                     return null;
                                   },
@@ -246,7 +249,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                               MainAxisAlignment.start,
                                           children: [
                                             TextWidget(
-                                              text: 'Price in \$*',
+                                              text:
+                                                  AppLocalizations.of(context)!
+                                                      .price_usd,
                                               color: color,
                                               textSize: 16,
                                               isTitle: true,
@@ -258,12 +263,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                               width: 100,
                                               child: TextFormField(
                                                 controller: _priceController,
-                                                key: const ValueKey('Price \$'),
+                                                key: ValueKey('Price \$'),
                                                 keyboardType:
                                                     TextInputType.number,
                                                 validator: (value) {
                                                   if (value!.isEmpty) {
-                                                    return 'Price is missed';
+                                                    return AppLocalizations.of(
+                                                            context)!
+                                                        .valid_price;
                                                   }
                                                   return null;
                                                 },
@@ -278,7 +285,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                             const SizedBox(height: 20),
                                             TextWidget(
                                               textSize: 16,
-                                              text: 'Product category*',
+                                              text:
+                                                  AppLocalizations.of(context)!
+                                                      .product_category,
                                               color: color,
                                               isTitle: true,
                                             ),
@@ -297,7 +306,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                             ),
                                             TextWidget(
                                               textSize: 16,
-                                              text: 'Measure unit*',
+                                              text:
+                                                  AppLocalizations.of(context)!
+                                                      .measure_unit,
                                               color: color,
                                               isTitle: true,
                                             ),
@@ -310,7 +321,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                               children: [
                                                 TextWidget(
                                                     textSize: 16,
-                                                    text: 'Kg',
+                                                    text: AppLocalizations.of(
+                                                            context)!
+                                                        .kg,
                                                     color: color),
                                                 Radio(
                                                   value: 1,
@@ -325,7 +338,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                                 ),
                                                 TextWidget(
                                                     textSize: 16,
-                                                    text: 'Piece',
+                                                    text: AppLocalizations.of(
+                                                            context)!
+                                                        .piece,
                                                     color: color),
                                                 Radio(
                                                   value: 2,
@@ -359,7 +374,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                                   width: 5,
                                                 ),
                                                 TextWidget(
-                                                  text: 'Sale',
+                                                  text: AppLocalizations.of(
+                                                          context)!
+                                                      .sale,
                                                   textSize: 16,
                                                   color: color,
                                                   isTitle: true,
@@ -440,7 +457,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                                 },
                                                 child: TextWidget(
                                                   textSize: 16,
-                                                  text: 'Update image',
+                                                  text: AppLocalizations.of(
+                                                          context)!
+                                                      .image_update,
                                                   color: Colors.green,
                                                 ),
                                               ),
@@ -458,16 +477,21 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                       ButtonsWidget(
                                         onPressed: () async {
                                           GlobalMethods.warningDialog(
-                                              title: 'Delete?',
-                                              subtitle: 'Press okay to confirm',
+                                              title:
+                                                  AppLocalizations.of(context)!
+                                                      .delete_warn,
+                                              subtitle:
+                                                  AppLocalizations.of(context)!
+                                                      .confirn_btn,
                                               fct: () async {
                                                 await FirebaseFirestore.instance
                                                     .collection('products')
                                                     .doc(widget.id)
                                                     .delete();
                                                 await Fluttertoast.showToast(
-                                                  msg:
-                                                      "Product has been deleted",
+                                                  msg: AppLocalizations.of(
+                                                          context)!
+                                                      .product_has_been_deleted,
                                                   toastLength:
                                                       Toast.LENGTH_LONG,
                                                   gravity: ToastGravity.CENTER,
@@ -483,7 +507,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                               },
                                               context: context);
                                         },
-                                        text: 'Delete',
+                                        text: AppLocalizations.of(context)!
+                                            .delete_btn,
                                         icon: IconlyBold.danger,
                                         backgroundColor: Colors.red.shade700,
                                       ),
@@ -491,7 +516,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                         onPressed: () {
                                           _updateProduct();
                                         },
-                                        text: 'Update',
+                                        text: AppLocalizations.of(context)!
+                                            .update_btn,
                                         icon: IconlyBold.setting,
                                         backgroundColor: Colors.green,
                                       ),
@@ -568,29 +594,41 @@ class _EditProductScreenState extends State<EditProductScreen> {
         dropdownColor: dropDownColor,
         style:
             TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: color),
-        items: const [
+        items: [
           DropdownMenuItem<String>(
-            child: Text('Vegetables'),
+            child: Text(
+              AppLocalizations.of(context)!.vegetables,
+            ),
             value: 'Vegetables',
           ),
           DropdownMenuItem<String>(
-            child: Text('Fruits'),
+            child: Text(
+              AppLocalizations.of(context)!.fruits,
+            ),
             value: 'Fruits',
           ),
           DropdownMenuItem<String>(
-            child: Text('Grains'),
+            child: Text(
+              AppLocalizations.of(context)!.grains,
+            ),
             value: 'Grains',
           ),
           DropdownMenuItem<String>(
-            child: Text('Nuts'),
+            child: Text(
+              AppLocalizations.of(context)!.nuts,
+            ),
             value: 'Nuts',
           ),
           DropdownMenuItem<String>(
-            child: Text('Herbs'),
+            child: Text(
+              AppLocalizations.of(context)!.herbs,
+            ),
             value: 'Herbs',
           ),
           DropdownMenuItem<String>(
-            child: Text('Spices'),
+            child: Text(
+              AppLocalizations.of(context)!.spices,
+            ),
             value: 'Spices',
           ),
         ],
@@ -599,7 +637,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
             _catValue = value!;
           });
         },
-        hint: const Text('Select a Category'),
+        hint: Text(
+          AppLocalizations.of(context)!.select_category,
+        ),
         value: _catValue,
       ),
     );
@@ -618,7 +658,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
           _pickedImage = selected;
         });
       } else {
-        log('No file selected');
+        log(
+          AppLocalizations.of(context)!.no_file_selected,
+        );
         // showToast("No file selected");
       }
     }
@@ -633,10 +675,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
           webImage = f;
         });
       } else {
-        log('No file selected');
+        log(
+          AppLocalizations.of(context)!.no_file_selected,
+        );
       }
     } else {
-      log('Perm not granted');
+      log(
+        AppLocalizations.of(context)!.perm_not_granted,
+      );
     }
   }
 }

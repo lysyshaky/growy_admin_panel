@@ -1,12 +1,16 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:growy_admin_panel/consts/theme_data.dart';
+import 'package:growy_admin_panel/l10n/l10n.dart';
 import 'package:growy_admin_panel/provider/dart_theme_provider.dart';
+import 'package:growy_admin_panel/provider/locale_provider.dart';
 import 'package:growy_admin_panel/screens/dashboard_screen.dart';
 import 'package:growy_admin_panel/screens/main_screen.dart';
 import 'package:provider/provider.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'controllers/menu_controller.dart';
 import 'inner_screens/add_product.dart';
 
@@ -80,10 +84,23 @@ class _MyAppState extends State<MyApp> {
                   return themeChangeProvider;
                 },
               ),
+              ChangeNotifierProvider(
+                create: (context) => LocaleProvider(),
+              ),
             ],
             child: Consumer<DarkThemeProvider>(
               builder: (context, themeProvider, child) {
+                final localeProvider = Provider.of<LocaleProvider>(context);
                 return MaterialApp(
+                    locale: localeProvider.locale,
+                    supportedLocales: L10n.all,
+                    //fix locale change
+                    localizationsDelegates: const [
+                      AppLocalizations.delegate,
+                      GlobalMaterialLocalizations.delegate,
+                      GlobalCupertinoLocalizations.delegate,
+                      GlobalWidgetsLocalizations.delegate,
+                    ],
                     debugShowCheckedModeBanner: false,
                     title: 'Growy',
                     theme:

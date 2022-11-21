@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:growy_admin_panel/widgets/text_widget.dart';
 
 import '../services/utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OrdersWidget extends StatefulWidget {
   const OrdersWidget(
@@ -69,8 +70,8 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     TextWidget(
-                      text:
-                          "${widget.quantity}X For \$${widget.price.toStringAsFixed(2)}",
+                      text: "${widget.quantity} X "
+                          "\$${widget.price.toStringAsFixed(2)}",
                       color: color,
                       textSize: 16,
                       isTitle: true,
@@ -79,7 +80,7 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                       child: Row(
                         children: [
                           TextWidget(
-                            text: "By",
+                            text: AppLocalizations.of(context)!.client,
                             color: Colors.green,
                             textSize: 16,
                             isTitle: true,

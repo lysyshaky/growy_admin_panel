@@ -7,6 +7,7 @@ import 'package:growy_admin_panel/widgets/text_widget.dart';
 
 import '../consts/consts.dart';
 import '../services/utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProuductGridWidget extends StatelessWidget {
   const ProuductGridWidget(
@@ -36,7 +37,7 @@ class ProuductGridWidget extends StatelessWidget {
             return snapshot.data!.docs.length == 0
                 ? Center(
                     child: TextWidget(
-                        text: "You didn't add any products",
+                        text: AppLocalizations.of(context)!.any_products_error,
                         color: color,
                         textSize: 16),
                   )
@@ -60,14 +61,16 @@ class ProuductGridWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: TextWidget(
-                    text: "Your store is empty", color: color, textSize: 16),
+                    text: AppLocalizations.of(context)!.store_empty,
+                    color: color,
+                    textSize: 16),
               ),
             );
           }
         }
         return Center(
           child: TextWidget(
-            text: "Something went wrong",
+            text: AppLocalizations.of(context)!.something_went_wrong,
             color: color,
             textSize: 30,
             isTitle: true,

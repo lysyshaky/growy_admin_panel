@@ -26,6 +26,7 @@ import '../services/global_methods.dart';
 import '../services/utils.dart';
 import '../widgets/side_menu.dart';
 import '../widgets/text_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UploadProductForm extends StatefulWidget {
   static const routeName = "/UploadProudctForm";
@@ -70,7 +71,8 @@ class _UploadProductFormState extends State<UploadProductForm> {
       _formKey.currentState!.save();
       if (_pickedImage == null && kIsWeb) {
         GlobalMethods.errorDialog(
-            subtitle: "Please pick up an image", context: context);
+            subtitle: AppLocalizations.of(context)!.pick_image,
+            context: context);
 
         return;
       }
@@ -97,7 +99,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
         });
         _clearForm();
         Fluttertoast.showToast(
-          msg: "Product uploaded succefully",
+          msg: AppLocalizations.of(context)!.product_upload,
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,
@@ -181,7 +183,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                 .read<MenuController>()
                                 .controlAddProductsMenu();
                           },
-                          title: 'Add product',
+                          title: AppLocalizations.of(context)!.add_product,
                           showTextField: false,
                         ),
                         const SizedBox(
@@ -200,7 +202,8 @@ class _UploadProductFormState extends State<UploadProductForm> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 TextWidget(
-                                  text: "Product Title",
+                                  text: AppLocalizations.of(context)!
+                                      .product_title,
                                   color: color,
                                   isTitle: true,
                                   textSize: 16,
@@ -213,7 +216,8 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                   key: const ValueKey("Title"),
                                   validator: (value) {
                                     if (value!.isEmpty) {
-                                      return 'Please enter a Title';
+                                      return AppLocalizations.of(context)!
+                                          .valid_title;
                                     }
                                     return null;
                                   },
@@ -234,7 +238,9 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                               MainAxisAlignment.start,
                                           children: [
                                             TextWidget(
-                                              text: "Price in \$*",
+                                              text:
+                                                  AppLocalizations.of(context)!
+                                                      .price_usd,
                                               color: color,
                                               isTitle: true,
                                               textSize: 14,
@@ -251,7 +257,9 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                                     TextInputType.number,
                                                 validator: (value) {
                                                   if (value!.isEmpty) {
-                                                    return 'Price is missed';
+                                                    return AppLocalizations.of(
+                                                            context)!
+                                                        .valid_price;
                                                   }
                                                   return null;
                                                 },
@@ -267,7 +275,9 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                               height: 20,
                                             ),
                                             TextWidget(
-                                              text: "Product category*",
+                                              text:
+                                                  AppLocalizations.of(context)!
+                                                      .product_category,
                                               color: color,
                                               isTitle: true,
                                               textSize: 14,
@@ -281,7 +291,9 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                               height: 20,
                                             ),
                                             TextWidget(
-                                              text: "Measure unit*",
+                                              text:
+                                                  AppLocalizations.of(context)!
+                                                      .measure_unit,
                                               color: color,
                                               isTitle: true,
                                               textSize: 14,
@@ -293,7 +305,9 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                             Row(
                                               children: [
                                                 TextWidget(
-                                                    text: "KG",
+                                                    text: AppLocalizations.of(
+                                                            context)!
+                                                        .kg,
                                                     color: color,
                                                     textSize: 16),
                                                 Radio(
@@ -308,7 +322,9 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                                   activeColor: Colors.green,
                                                 ),
                                                 TextWidget(
-                                                    text: "Piece",
+                                                    text: AppLocalizations.of(
+                                                            context)!
+                                                        .piece,
                                                     color: color,
                                                     textSize: 16),
                                                 Radio(
@@ -373,7 +389,9 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                               });
                                             },
                                             child: TextWidget(
-                                              text: 'Clear',
+                                              text:
+                                                  AppLocalizations.of(context)!
+                                                      .clear_btn,
                                               color: Colors.red,
                                               textSize: 14,
                                             ),
@@ -383,7 +401,9 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                               _pickImage();
                                             },
                                             child: TextWidget(
-                                              text: 'Update image',
+                                              text:
+                                                  AppLocalizations.of(context)!
+                                                      .image_update,
                                               color: Colors.green,
                                               textSize: 14,
                                             ),
@@ -401,14 +421,16 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                     children: [
                                       ButtonsWidget(
                                           onPressed: _clearForm,
-                                          text: 'Clear form',
+                                          text: AppLocalizations.of(context)!
+                                              .clear_form_btn,
                                           icon: IconlyBold.danger,
                                           backgroundColor: Colors.red),
                                       ButtonsWidget(
                                           onPressed: () {
                                             _uploadForm();
                                           },
-                                          text: 'Upload',
+                                          text: AppLocalizations.of(context)!
+                                              .update_btn,
                                           icon: IconlyBold.upload,
                                           backgroundColor: Colors.green),
                                     ],
@@ -438,7 +460,9 @@ class _UploadProductFormState extends State<UploadProductForm> {
           _pickedImage = selected;
         });
       } else {
-        print('No image have been picked');
+        print(
+          AppLocalizations.of(context)!.no_file_selected,
+        );
       }
     } else if (kIsWeb) {
       final ImagePicker _picker = ImagePicker();
@@ -451,10 +475,14 @@ class _UploadProductFormState extends State<UploadProductForm> {
           _pickedImage = File('a');
         });
       } else {
-        print('No image have been picked');
+        print(
+          AppLocalizations.of(context)!.no_file_selected,
+        );
       }
     } else {
-      print('Something went wrong');
+      print(
+        AppLocalizations.of(context)!.something_went_wrong,
+      );
     }
   }
 
@@ -482,7 +510,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                   _pickImage();
                 }),
                 child: TextWidget(
-                  text: 'Choose an image',
+                  text: AppLocalizations.of(context)!.select_image,
                   color: Colors.green,
                   textSize: 18,
                 ),
@@ -513,42 +541,44 @@ class _UploadProductFormState extends State<UploadProductForm> {
               });
               print(_catValue);
             },
-            hint: const Text("Select a category"),
-            items: const [
+            hint: Text(
+              AppLocalizations.of(context)!.select_category,
+            ),
+            items: [
               DropdownMenuItem(
                 value: 'Vegetables',
                 child: Text(
-                  'Vegetables',
+                  AppLocalizations.of(context)!.vegetables,
                 ),
               ),
               DropdownMenuItem(
                 value: 'Fruits',
                 child: Text(
-                  'Fruits',
+                  AppLocalizations.of(context)!.fruits,
                 ),
               ),
               DropdownMenuItem(
                 value: 'Grains',
                 child: Text(
-                  'Grains',
+                  AppLocalizations.of(context)!.grains,
                 ),
               ),
               DropdownMenuItem(
                 value: 'Nuts',
                 child: Text(
-                  'Nuts',
+                  AppLocalizations.of(context)!.nuts,
                 ),
               ),
               DropdownMenuItem(
                 value: 'Herbs',
                 child: Text(
-                  'Herbs',
+                  AppLocalizations.of(context)!.herbs,
                 ),
               ),
               DropdownMenuItem(
                 value: 'Spices',
                 child: Text(
-                  'Spices',
+                  AppLocalizations.of(context)!.spices,
                 ),
               ),
             ],

@@ -11,6 +11,7 @@ import '../widgets/grid_products.dart';
 import '../widgets/header.dart';
 import '../widgets/orders_list.dart';
 import '../widgets/side_menu.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AllOrdersScreen extends StatefulWidget {
   const AllOrdersScreen({Key? key}) : super(key: key);
@@ -49,7 +50,7 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
                         ftc: () {
                           context.read<MenuController>().controlAllOrders();
                         },
-                        title: 'All orders',
+                        title: AppLocalizations.of(context)!.all_orders,
                       ),
                       const SizedBox(
                         height: 25,

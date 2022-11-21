@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:growy_admin_panel/inner_screens/all_orders.dart';
 import 'package:growy_admin_panel/provider/dart_theme_provider.dart';
+import 'package:growy_admin_panel/widgets/language_picker_widget.dart';
 import 'package:growy_admin_panel/widgets/text_widget.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
-
 import '../inner_screens/all_products.dart';
+import '../l10n/l10n.dart';
+import '../provider/locale_provider.dart';
 import '../screens/main_screen.dart';
 import '../services/utils.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'language_widget.dart';
 
 class SideMenu extends StatefulWidget {
   const SideMenu({Key? key}) : super(key: key);
@@ -33,7 +39,7 @@ class _SideMenuState extends State<SideMenu> {
             child: Image.asset('assets/images/groceries.png'),
           ),
           DrawerListTile(
-            title: "Main",
+            title: AppLocalizations.of(context)!.main,
             press: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
@@ -44,7 +50,7 @@ class _SideMenuState extends State<SideMenu> {
             icon: Icons.home_filled,
           ),
           DrawerListTile(
-            title: "View all products",
+            title: AppLocalizations.of(context)!.view_all_products,
             press: () {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => AllProductsScreen()));
@@ -52,7 +58,7 @@ class _SideMenuState extends State<SideMenu> {
             icon: Icons.store,
           ),
           DrawerListTile(
-            title: "View all orders",
+            title: AppLocalizations.of(context)!.view_all_orders,
             press: () {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => AllOrdersScreen()));
@@ -60,8 +66,8 @@ class _SideMenuState extends State<SideMenu> {
             icon: IconlyBold.bag_2,
           ),
           SwitchListTile(
-            title: const Text(
-              'Theme',
+            title: Text(
+              AppLocalizations.of(context)!.theme,
               style: TextStyle(color: Colors.white),
             ),
             secondary: Icon(
@@ -76,7 +82,22 @@ class _SideMenuState extends State<SideMenu> {
                 themeState.setDarkTheme = value;
               });
             },
-          )
+          ),
+          LanguagePickerWidget(),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const LanguageWidget(),
+              Text(
+                AppLocalizations.of(context)!.language,
+                style: const TextStyle(color: Colors.white, fontSize: 18),
+              ),
+            ],
+          ),
         ],
       ),
     );

@@ -5,6 +5,7 @@ import 'package:growy_admin_panel/consts/consts.dart';
 import 'package:growy_admin_panel/services/utils.dart';
 
 import '../responsive.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Header extends StatelessWidget {
   const Header({
@@ -47,7 +48,7 @@ class Header extends StatelessWidget {
             : Expanded(
                 child: TextField(
                   decoration: InputDecoration(
-                      hintText: "Search",
+                      hintText: AppLocalizations.of(context)!.search,
                       fillColor: Colors.green.withOpacity(0.1),
                       filled: true,
                       border: const OutlineInputBorder(

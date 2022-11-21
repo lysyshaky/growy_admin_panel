@@ -7,6 +7,7 @@ import 'package:growy_admin_panel/widgets/text_widget.dart';
 
 import '../services/global_methods.dart';
 import '../services/utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProductWidget extends StatefulWidget {
   const ProductWidget({Key? key, required this.id}) : super(key: key);
@@ -52,7 +53,7 @@ class _ProductWidgetState extends State<ProductWidget> {
       }
     } catch (error) {
       GlobalMethods.errorDialog(
-          subtitle: 'Something went wrong, please try again later',
+          subtitle: AppLocalizations.of(context)!.something_went_wrong,
           context: context);
     } finally {}
   }
@@ -137,7 +138,9 @@ class _ProductWidgetState extends State<ProductWidget> {
                     ),
                     const Spacer(),
                     TextWidget(
-                        text: isPiece ? 'Piece' : '1Kg',
+                        text: isPiece
+                            ? AppLocalizations.of(context)!.one_piece
+                            : AppLocalizations.of(context)!.one_kg,
                         color: color,
                         textSize: 18),
                   ],

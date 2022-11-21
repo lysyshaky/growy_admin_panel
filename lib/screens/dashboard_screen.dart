@@ -18,6 +18,7 @@ import '../widgets/header.dart';
 import '../widgets/orders_list.dart';
 import '../widgets/products_widget.dart';
 import '../widgets/text_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -36,13 +37,13 @@ class DashboardScreen extends StatelessWidget {
               ftc: () {
                 context.read<MenuController>().controlDashboardMenu();
               },
-              title: 'Dashboard',
+              title: AppLocalizations.of(context)!.dashboard_title,
             ),
             const SizedBox(
               height: 20,
             ),
             TextWidget(
-              text: "Latest Products",
+              text: AppLocalizations.of(context)!.lasted_products,
               color: color,
               textSize: 14,
             ),
@@ -62,7 +63,7 @@ class DashboardScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    text: "View all",
+                    text: AppLocalizations.of(context)!.view_all_btn,
                     icon: Icons.store,
                     backgroundColor: Colors.green,
                   ),
@@ -76,7 +77,7 @@ class DashboardScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    text: "Add product",
+                    text: AppLocalizations.of(context)!.add_product_btn,
                     icon: Icons.add,
                     backgroundColor: Colors.green,
                   ),
