@@ -1,6 +1,10 @@
 # growy_admin_panel
 
-A new Flutter project.
+
+
+https://user-images.githubusercontent.com/48721796/209473666-fdaf5800-d995-46ba-a104-b8eb70066963.mp4
+
+
 
 ## Getting Started
 
