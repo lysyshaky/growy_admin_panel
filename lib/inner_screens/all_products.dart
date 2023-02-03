@@ -6,7 +6,7 @@ import 'package:growy_admin_panel/widgets/orders_list.dart';
 import 'package:provider/provider.dart';
 
 import '../consts/consts.dart';
-import '../controllers/menu_controller.dart';
+import '../controllers/menu_controller.dart' as prefix;
 import '../responsive.dart';
 import '../services/utils.dart';
 import '../widgets/grid_products.dart';
@@ -28,7 +28,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
     Size size = Utils(context).getScreenSize;
     Color color = Utils(context).color;
     return Scaffold(
-      key: context.read<MenuController>().getGridScaffoldKey,
+      key: context.read<prefix.MenuController>().getGridScaffoldKey,
       drawer: const SideMenu(),
       body: SafeArea(
         child: Row(
@@ -49,7 +49,9 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                       ),
                       Header(
                         ftc: () {
-                          context.read<MenuController>().controlProductsMenu();
+                          context
+                              .read<prefix.MenuController>()
+                              .controlProductsMenu();
                         },
                         title: AppLocalizations.of(context)!.all_products,
                       ),

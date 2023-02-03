@@ -10,7 +10,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:growy_admin_panel/consts/consts.dart';
-import 'package:growy_admin_panel/controllers/menu_controller.dart';
+import 'package:growy_admin_panel/controllers/menu_controller.dart' as prefix;
 import 'package:growy_admin_panel/responsive.dart';
 import 'package:growy_admin_panel/screens/loading_manager.dart';
 import 'package:growy_admin_panel/widgets/buttons_widget.dart';
@@ -162,7 +162,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
       ),
     );
     return Scaffold(
-        key: context.read<MenuController>().getAddProductsScaffoldKey,
+        key: context.read<prefix.MenuController>().getAddProductsScaffoldKey,
         drawer: const SideMenu(),
         body: LoadingManager(
           isLoading: _isLoading,
@@ -186,7 +186,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                         Header(
                           ftc: () {
                             context
-                                .read<MenuController>()
+                                .read<prefix.MenuController>()
                                 .controlAddProductsMenu();
                           },
                           title: AppLocalizations.of(context)!.add_product,

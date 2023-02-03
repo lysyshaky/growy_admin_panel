@@ -14,7 +14,7 @@ import 'package:growy_admin_panel/widgets/header.dart';
 import 'package:iconly/iconly.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:growy_admin_panel/controllers/menu_controller.dart';
+import 'package:growy_admin_panel/controllers/menu_controller.dart' as prefix;
 import 'package:uuid/uuid.dart';
 import 'package:firebase/firebase.dart' as fb;
 import '../consts/consts.dart';
@@ -189,7 +189,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
       ),
     );
     return Scaffold(
-      key: context.read<MenuController>().getEditProductscaffoldKey,
+      key: context.read<prefix.MenuController>().getEditProductscaffoldKey,
       drawer: const SideMenu(),
       body: Row(
         children: [

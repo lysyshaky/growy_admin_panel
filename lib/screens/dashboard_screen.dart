@@ -8,7 +8,7 @@ import 'package:growy_admin_panel/services/global_methods.dart';
 import 'package:growy_admin_panel/widgets/buttons_widget.dart';
 import 'package:provider/provider.dart';
 
-import '../controllers/menu_controller.dart';
+import '../controllers/menu_controller.dart' as prefix;
 import '../inner_screens/add_product.dart';
 import '../inner_screens/all_orders.dart';
 import '../responsive.dart';
@@ -35,7 +35,7 @@ class DashboardScreen extends StatelessWidget {
           children: [
             Header(
               ftc: () {
-                context.read<MenuController>().controlDashboardMenu();
+                context.read<prefix.MenuController>().controlDashboardMenu();
               },
               title: AppLocalizations.of(context)!.dashboard_title,
             ),

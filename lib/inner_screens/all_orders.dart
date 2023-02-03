@@ -4,7 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:growy_admin_panel/consts/consts.dart';
 import 'package:provider/provider.dart';
 
-import '../controllers/menu_controller.dart';
+import '../controllers/menu_controller.dart' as prefix;
 import '../responsive.dart';
 import '../services/utils.dart';
 import '../widgets/grid_products.dart';
@@ -25,7 +25,7 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
   Widget build(BuildContext context) {
     Size size = Utils(context).getScreenSize;
     return Scaffold(
-      key: context.read<MenuController>().getOrdersScaffoldKey,
+      key: context.read<prefix.MenuController>().getOrdersScaffoldKey,
       drawer: const SideMenu(),
       body: SafeArea(
         child: Row(
@@ -48,7 +48,9 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
                       Header(
                         showTextField: false,
                         ftc: () {
-                          context.read<MenuController>().controlAllOrders();
+                          context
+                              .read<prefix.MenuController>()
+                              .controlAllOrders();
                         },
                         title: AppLocalizations.of(context)!.all_orders,
                       ),

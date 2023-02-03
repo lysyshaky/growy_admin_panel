@@ -5,7 +5,7 @@ import 'package:growy_admin_panel/screens/dashboard_screen.dart';
 import 'package:growy_admin_panel/widgets/side_menu.dart';
 import 'package:provider/provider.dart';
 
-import '../controllers/menu_controller.dart';
+import '../controllers/menu_controller.dart' as prefix;
 import '../responsive.dart';
 
 class MainScreen extends StatelessWidget {
@@ -14,7 +14,7 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: context.read<MenuController>().getScaffoldKey,
+      key: context.read<prefix.MenuController>().getScaffoldKey,
       drawer: const SideMenu(),
       body: SafeArea(
         child: Row(
