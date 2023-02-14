@@ -283,7 +283,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                               width: 150,
                                               child: TextFormField(
                                                 controller: _priceController,
-                                                key: const ValueKey("Price \$"),
+                                                key: const ValueKey("Price \₴"),
                                                 keyboardType:
                                                     TextInputType.number,
                                                 validator: (value) {

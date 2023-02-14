@@ -71,7 +71,7 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                   children: [
                     TextWidget(
                       text: "${widget.quantity} X "
-                          "\$${widget.price.toStringAsFixed(2)}",
+                          "${widget.price.toStringAsFixed(2)}\₴",
                       color: color,
                       textSize: 16,
                       isTitle: true,

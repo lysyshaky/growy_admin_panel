@@ -295,7 +295,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                               width: 100,
                                               child: TextFormField(
                                                 controller: _priceController,
-                                                key: ValueKey('Price \$'),
+                                                key: ValueKey('Price \₴'),
                                                 keyboardType:
                                                     TextInputType.number,
                                                 validator: (value) {
@@ -427,7 +427,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                                       children: [
                                                         TextWidget(
                                                             textSize: 16,
-                                                            text: "\$" +
+                                                            text: "\₴" +
                                                                 _salePrice
                                                                     .toStringAsFixed(
                                                                         2),
