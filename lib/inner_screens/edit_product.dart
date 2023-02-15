@@ -427,7 +427,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                                       children: [
                                                         TextWidget(
                                                             textSize: 16,
-                                                            text: "\₴" +
+                                                            text: "\ ₴" +
                                                                 _salePrice
                                                                     .toStringAsFixed(
                                                                         2),
